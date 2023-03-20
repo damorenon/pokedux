@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col } from 'antd';
 import PokemonList from './components/PokemonList';
 import Searcher from './components/Searcher';
-import { getPokemon, getPokemonDetails } from './api';
-import { setPokemons } from './actions';
+import { getPokemon } from './api';
+import { getPokemonWithDetails } from './actions';
 import logo from './statics/logo.svg';
 import './App.css';
-import { useDispatch, useSelector } from 'react-redux';
 
 // OLD REDUX WAY
 /* function App({ pokemons, setPokemons }) {
@@ -49,10 +49,7 @@ function App() {
   useEffect(() => {
     const fetchPokemons = async () => {
       const pokemonRes = await getPokemon();
-      const pokemonDetails = await Promise.all(
-        pokemonRes.map(pokemon => getPokemonDetails(pokemon))
-      );
-      dispatch(setPokemons(pokemonDetails));
+      dispatch(getPokemonWithDetails(pokemonRes));
     }
     fetchPokemons();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,4 +1,4 @@
-export const logger = (store) => (next) => (action) => {
+export const logger = () => (next) => (action) => {
   console.log(action);
   next(action);
 }
