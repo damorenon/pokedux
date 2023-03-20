@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Col } from 'antd';
 import PokemonList from './components/PokemonList';
 import Searcher from './components/Searcher';
-import { getPokemon } from './api';
+import { getPokemon, getPokemonDetails } from './api';
 import { setPokemons } from './actions';
 import logo from './statics/logo.svg';
 import './App.css';
@@ -49,7 +49,10 @@ function App() {
   useEffect(() => {
     const fetchPokemons = async () => {
       const pokemonRes = await getPokemon();
-      dispatch(setPokemons(pokemonRes));
+      const pokemonDetails = await Promise.all(
+        pokemonRes.map(pokemon => getPokemonDetails(pokemon))
+      );
+      dispatch(setPokemons(pokemonDetails));
     }
     fetchPokemons();
     // eslint-disable-next-line react-hooks/exhaustive-deps
