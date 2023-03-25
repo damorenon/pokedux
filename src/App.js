@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Spin } from 'antd';
+import { get } from "immutable";
+
 import PokemonList from './components/PokemonList';
 import Searcher from './components/Searcher';
 import { getPokemon } from './api';
@@ -43,8 +45,8 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(App); */
 
 function App() {
-  const pokemons = useSelector(state => state.pokemons);
-  const loading = useSelector(state => state.loading);
+  const pokemons = useSelector(state => get(state, 'pokemons')).toJS();
+  const loading = useSelector(state => get(state, 'loading'));
   const dispatch = useDispatch();
 
   useEffect(() => {
