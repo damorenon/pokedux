@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Col, Spin } from 'antd';
-import { get } from "immutable";
+import { getIn } from "immutable";
 
 import PokemonList from './components/PokemonList';
 import Searcher from './components/Searcher';
@@ -45,8 +45,8 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(App); */
 
 function App() {
-  const pokemons = useSelector(state => get(state, 'pokemons')).toJS();
-  const loading = useSelector(state => get(state, 'loading'));
+  const pokemons = useSelector(state => getIn(state, ['data', 'pokemons']), shallowEqual).toJS();
+  const loading = useSelector(state => getIn(state, ['ui', 'loading']));
   const dispatch = useDispatch();
 
   useEffect(() => {
