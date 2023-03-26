@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Col, Spin } from 'antd';
-import { getIn } from "immutable";
 
 import PokemonList from './components/PokemonList';
 import Searcher from './components/Searcher';
-import { getPokemon } from './api';
-import { getPokemonWithDetails } from './actions';
 import logo from './statics/logo.svg';
+import { fetchPokemonWithDetails } from './slices/dataSlice';
 import './App.css';
 
 // OLD REDUX WAY
@@ -45,16 +43,12 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(App); */
 
 function App() {
-  const pokemons = useSelector(state => getIn(state, ['data', 'pokemons']), shallowEqual).toJS();
-  const loading = useSelector(state => getIn(state, ['ui', 'loading']));
+  const pokemons = useSelector(state => state.data.pokemons, shallowEqual);
+  const loading = useSelector(state => state.ui.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchPokemons = async () => {
-      const pokemonRes = await getPokemon();
-      dispatch(getPokemonWithDetails(pokemonRes));
-    }
-    fetchPokemons();
+    dispatch(fetchPokemonWithDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
